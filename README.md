@@ -15,8 +15,9 @@ var thing = O5.defineProperties( {}, {
     },
     "bar": {
         writable: false,        // cannot write/set
+        value: "initial",
         get: function () {
-            return "I AM " + this.value + " WHEN GETTED";
+            return "I AM '" + this.value + "' WHEN GETTED";
         }
     },
     "vanilla": {},    // uses defaults
@@ -24,6 +25,25 @@ var thing = O5.defineProperties( {}, {
         value: [3,2,1]
     }
 });
+
+// writing to a property
+O5.set(thing, "foo", "lala");
+
+// attempted write to unwritable property fails
+O5.set(thing, "bar", "impossible");
+O5.get(thing, "bar") // returns "I AM 'initial' WHEN GETTED"
+
+// get a vanilla JSON representation of an object
+json = O5.toJSON(thing)
+/* returns
+{
+	"foo": "YOU SET ME TO 'lala' LAST",
+	"bar": "I AM 'initial' WHEN GETTED",
+	"vanilla": undefined,
+	"classic": [3,2,1]
+}
+*/
+
 ```
 
 The default descriptor looks like this:
