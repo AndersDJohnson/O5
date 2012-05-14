@@ -14,7 +14,7 @@ var thing = O5.defineProperties( {}, {
         }
     },
     "bar": {
-        writable: false        // cannot write/set
+        writable: false,        // cannot write/set
         get: function () {
             return "I AM " + this.value + " WHEN GETTED";
         }
@@ -30,14 +30,16 @@ The default descriptor looks like this:
 
 ```javascript
 {
-    writable: true
-    configurable: true
-    enumerable: true
-    value: undefined
-    get: ->
-        return this.value    // gets the raw value property
-    set: (value) ->
-        return value    // return value assigned to property
+    writable: true,
+    configurable: true,
+    enumerable: true,
+    value: undefined,
+    get: function () {
+        return this.value;    // gets the raw value property
+    },
+    set: function (value) {
+        return value;    // return value assigned to property
+    }
 }
 ```
 
