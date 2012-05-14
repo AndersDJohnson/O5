@@ -33,6 +33,9 @@ O5.set(thing, "foo", "lala");
 O5.set(thing, "bar", "impossible");
 O5.get(thing, "bar") // returns "I AM 'initial' WHEN GETTED"
 
+// unobtrusive, normal properties are not afffected
+05.normal = "no problem"
+
 // get a vanilla JSON representation of an object
 json = O5.toJSON(thing)
 /* returns
@@ -41,6 +44,7 @@ json = O5.toJSON(thing)
 	"bar": "I AM 'initial' WHEN GETTED",
 	"vanilla": undefined,
 	"classic": [3,2,1]
+	"normal": "no problem"
 }
 */
 

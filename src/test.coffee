@@ -31,6 +31,8 @@ t2 = O5.defineProperties {}, {
 		value: "GEEEE"
 }
 
+t2.normal = "hello"
+
 O5.set(t1, "foo", "lala")
 O5.set(t1, "bing", "write allowed!")
 

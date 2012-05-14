@@ -42,6 +42,8 @@
     }
   });
 
+  t2.normal = "hello";
+
   O5.set(t1, "foo", "lala");
 
   O5.set(t1, "bing", "write allowed!");

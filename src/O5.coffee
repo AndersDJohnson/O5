@@ -134,6 +134,8 @@ module.exports = exports = O5 = do ->
 			id = get_id(obj)
 			for prop, descriptor of cache[id]
 				json[prop] = descriptor.get()
+			for prop, value of obj
+				json[prop] = value unless prop is id_key
 			return json
 	
 	return O5

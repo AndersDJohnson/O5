@@ -183,13 +183,17 @@ Begin inlined Underscore.js utilities
         return (_ref = cache[id]) != null ? (_ref2 = _ref[prop]) != null ? _ref2.set(value) : void 0 : void 0;
       },
       toJSON: function(obj) {
-        var descriptor, id, json, prop, _ref;
+        var descriptor, id, json, prop, value, _ref;
         json = {};
         id = get_id(obj);
         _ref = cache[id];
         for (prop in _ref) {
           descriptor = _ref[prop];
           json[prop] = descriptor.get();
+        }
+        for (prop in obj) {
+          value = obj[prop];
+          if (prop !== id_key) json[prop] = value;
         }
         return json;
       }
