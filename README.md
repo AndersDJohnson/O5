@@ -35,7 +35,7 @@ The default descriptor looks like this:
     enumerable: true
     value: undefined
     get: ->
-        return @value    // gets the raw value property
+        return this.value    // gets the raw value property
     set: (value) ->
         return value    // return value assigned to property
 }
