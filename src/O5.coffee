@@ -67,77 +67,86 @@ End inlined Underscore.js utilities
 
 ###
 The good stuff
-###
-module.exports = exports = O5 = do ->
+###	
+do ->
+	name = "O5"
 	
-	###
-	Default property descriptor values
-	Using prototypical inheritance for defaults improves performance
-	###
-	class Descriptor
-		writable: true
-		configurable: true
-		enumerable: true
-		value: undefined
-		get: ->
-			return @value
-		# the user's set function
-		_set: (value) ->
-			return value
-		set: (value) ->
-			if @writable
-				@value = @_set(value)
+	factory = ->
+		###
+		Default property descriptor values
+		Using prototypical inheritance for defaults improves performance
+		###
+		class Descriptor
+			writable: true
+			configurable: true
+			enumerable: true
+			value: undefined
+			get: ->
+				return @value
+			# the user's set function
+			_set: (value) ->
+				return value
+			set: (value) ->
+				if @writable
+					@value = @_set(value)
 	
-	id_key = "_05_id"
+		id_key = "_05_id"
 	
-	get_id = (obj) ->
-		return obj[id_key]
+		get_id = (obj) ->
+			return obj[id_key]
 	
-	set_id = (obj) ->
-		id = _.uniqueId()
-		return obj[id_key] = id
+		set_id = (obj) ->
+			id = _.uniqueId()
+			return obj[id_key] = id
 	
-	cache = {}
+		cache = {}
 	
-	O5 =
-		init: (obj) ->
-			id = set_id(obj)
-			cache[id] = {}
-		defineProperty: (obj, prop, descriptor) ->
-			@init(obj) unless get_id(obj)?
-			id = get_id(obj)
-			defaultDescriptor = new Descriptor()
-			if descriptor["set"]?
-				descriptor["_set"] = descriptor["set"]
-				delete descriptor["set"]
-			descriptor = _.defaults(descriptor, defaultDescriptor)
-			cache[id][prop] = descriptor
-			return obj
-		defineProperties: (obj, props) ->
-			for prop, descriptor of props
-				obj = @defineProperty(obj, prop, descriptor)
-			return obj
-		getOwnPropertyDescriptor: (obj, prop) ->
-			id = get_id(obj)
-			descriptorClone = _.clone(cache[id]?[prop])
-			descriptorClone["set"] = descriptorClone["_set"]
-			delete descriptorClone["_set"]
-			return descriptorClone
-		get: (obj, prop) ->
-			id = get_id(obj)
-			return cache[id]?[prop]?.get()
-		set: (obj, prop, value) ->
-			id = get_id(obj)
-			return cache[id]?[prop]?.set(value)
-		toJSON: (obj) ->
-			json = {}
-			id = get_id(obj)
-			for prop, descriptor of cache[id]
-				json[prop] = descriptor.get()
-			for prop, value of obj
-				json[prop] = value unless prop is id_key
-			return json
+		O5 =
+			init: (obj) ->
+				id = set_id(obj)
+				cache[id] = {}
+			defineProperty: (obj, prop, descriptor) ->
+				@init(obj) unless get_id(obj)?
+				id = get_id(obj)
+				defaultDescriptor = new Descriptor()
+				if descriptor["set"]?
+					descriptor["_set"] = descriptor["set"]
+					delete descriptor["set"]
+				descriptor = _.defaults(descriptor, defaultDescriptor)
+				cache[id][prop] = descriptor
+				return obj
+			defineProperties: (obj, props) ->
+				for prop, descriptor of props
+					obj = @defineProperty(obj, prop, descriptor)
+				return obj
+			getOwnPropertyDescriptor: (obj, prop) ->
+				id = get_id(obj)
+				descriptorClone = _.clone(cache[id]?[prop])
+				descriptorClone["set"] = descriptorClone["_set"]
+				delete descriptorClone["_set"]
+				return descriptorClone
+			get: (obj, prop) ->
+				id = get_id(obj)
+				return cache[id]?[prop]?.get()
+			set: (obj, prop, value) ->
+				id = get_id(obj)
+				return cache[id]?[prop]?.set(value)
+			toJSON: (obj) ->
+				json = {}
+				id = get_id(obj)
+				for prop, descriptor of cache[id]
+					json[prop] = descriptor.get()
+				for prop, value of obj
+					json[prop] = value unless prop is id_key
+				return json
 	
-	return O5
-
+		return O5
+	
+	# universal module wrapper (CommonJS, AMD/RequireJS, and plain browser support)
+	if define?
+		define [], factory
+	else if module?.exports?
+		module.exports = exports = factory()
+	else if window?
+		window[name] = factory()
 
