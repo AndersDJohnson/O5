@@ -2,7 +2,48 @@
 
 A polyfill for ECMAScript 5+ / Harmony object descriptor functionality.
 
-# MIT X11 License
+## Example
+
+```javascript
+var O5 = require("./[where-you-put-it]/O5");
+
+var thing = O5.defineProperties( {}, {
+    "foo": {
+        set: function () {
+            return "YOU SET ME TO '" + this.value + "' LAST";
+        }
+    },
+    "bar": {
+        writable: false        // cannot write/set
+        get: function () {
+            return "I AM " + this.value + " WHEN GETTED";
+        }
+    },
+    "vanilla": {},    // uses defaults
+    "classic": {
+        value: [3,2,1]
+    }
+});
+```
+
+The default descriptor looks like this:
+
+```javascript
+{
+    writable: true
+    configurable: true
+    enumerable: true
+    value: undefined
+    get: ->
+        return @value    // gets the raw value property
+    set: (value) ->
+        return value    // return value assigned to property
+}
+```
+
+## License
+
+MIT/X11
 
 Copyright (C) 2012 Anders D. Johnson <AndersDJohnson@gmail.com>
 
