@@ -34,7 +34,7 @@ O5.set(thing, "bar", "impossible");
 O5.get(thing, "bar") // returns "I AM 'initial' WHEN GETTED"
 
 // unobtrusive, normal properties are not afffected
-05.normal = "no problem"
+thing.normal = "no problem"
 
 // get a vanilla JSON representation of an object
 json = O5.toJSON(thing)
