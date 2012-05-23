@@ -145,6 +145,14 @@ Begin inlined Underscore.js utilities
           id = set_id(obj);
           return cache[id] = {};
         },
+        clone: function(obj) {
+          var newId, newObj, oldId;
+          oldId = get_id(obj);
+          newObj = {};
+          newId = set_id(newObj);
+          cache[newId] = _.clone(cache[oldId]);
+          return newObj;
+        },
         defineProperty: function(obj, prop, descriptor) {
           var defaultDescriptor, id;
           if (get_id(obj) == null) this.init(obj);
@@ -180,9 +188,17 @@ Begin inlined Underscore.js utilities
           return (_ref = cache[id]) != null ? (_ref2 = _ref[prop]) != null ? _ref2.get() : void 0 : void 0;
         },
         set: function(obj, prop, value) {
-          var id, _ref, _ref2;
+          var id, p, _ref;
           id = get_id(obj);
-          return (_ref = cache[id]) != null ? (_ref2 = _ref[prop]) != null ? _ref2.set(value) : void 0 : void 0;
+          p = (_ref = cache[id]) != null ? _ref[prop] : void 0;
+          if (p != null) {
+            return p.set(value);
+          } else {
+            this.defineProperty(obj, prop, {
+              value: value
+            });
+            return O5.get(obj, prop);
+          }
         },
         toJSON: function(obj) {
           var descriptor, id, json, prop, value, _ref;

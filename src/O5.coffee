@@ -105,6 +105,12 @@ do ->
 			init: (obj) ->
 				id = set_id(obj)
 				cache[id] = {}
+			clone: (obj) ->
+				oldId = get_id(obj)
+				newObj = {}
+				newId = set_id(newObj)
+				cache[newId] = _.clone(cache[oldId])
+				return newObj
 			defineProperty: (obj, prop, descriptor) ->
 				@init(obj) unless get_id(obj)?
 				id = get_id(obj)
@@ -130,7 +136,14 @@ do ->
 				return cache[id]?[prop]?.get()
 			set: (obj, prop, value) ->
 				id = get_id(obj)
-				return cache[id]?[prop]?.set(value)
+				p = cache[id]?[prop]
+				if p?
+					return p.set(value)
+				else
+					@defineProperty obj, prop, {
+						value: value
+					}
+					return O5.get(obj, prop)
 			toJSON: (obj) ->
 				json = {}
 				id = get_id(obj)
